@@ -1,0 +1,12 @@
+title: "HPTBI competition data modeling using random forests"
+version: v1.0
+language: R
+author:
+- name: Na'il Mitchell
+  email: nm0@fastmail.com
+  github: nmitche
+description: >
+  Random forests, a decision tree based machine learning algorithm, was used to make predictions on mortality 
+  and FSS of pediatric patients with brain injuries. Na'il has studied machine learning in a statistics
+  Master's program and enjoys coding and creating web content in his spare time (website below).
+url: https://datamolecule.org

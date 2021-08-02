@@ -1,0 +1,179 @@
+---
+title: Classification Model for predicting mortality of pediatric patients with brain
+  injuries
+author: "Na'il"
+date: "7/16/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+Overview:
+
+This machine learning data report is for a University of Colorado School of Medicine data predicition Hackathon. The purpose of the hackathon is to develop a classification model for hospital mortality and another model for  total functional status score (FSS, restricted integers) for pediatric patients with brain injuries. This report is specific to classifying pediatric mortality, a binary variable. Accuracy is used as the model performance metric. High performance models were developed: a random forest model and a null model. Future work includes calculating other performance metrics, including sensitivity and specificity. 
+
+
+Load data set into R
+```{r}
+ds<-read.csv('../csvs/training.csv')
+
+```
+
+
+-optional i- Create R environment with training data set.
+```{r,eval=FALSE}
+env_hptbi<-new.env()
+assign('ds',ds,envir=env_hptbi)
+save(env_hptbi,file='env_hptbi.rdata')
+```
+
+
+-optional ii: Loads environment with data set-
+```{r,eval=FALSE}
+env_hptbi_<-load(file='env_hptbi.rdata')
+attach(env_hptbi)
+```
+
+
+
+Preview data
+```{r}
+dim(ds)
+head(ds)
+```
+
+
+Generate automated EDA report before modeling
+```{r,comment=NA,echo=FALSE}
+library(DataExplorer)
+create_report(ds)
+```
+
+
+
+Based on the report, any variable starting with admitto contains high amounts of missing data.
+All of these variables must be dropped
+```{r}
+library('dplyr')
+
+ds2<-ds%>%
+select(-starts_with('admitto'))
+
+100*(ncol(ds)-ncol(ds2))/ncol(ds)
+```
+
+
+30% of the number of variables in the original data set were removed. 
+Now missing data can be dropped
+```{r}
+ds2<-na.omit(ds2)
+
+```
+
+
+
+About one third of the observations were removed. 
+Now a model can be fitted.
+First, I need to choose a target variable. I'll choose Mortality. 
+The author had some coding for configuring/initializing the target variable.
+I'll paste it below and substitute ds2 for hackathon_mortality_data
+
+```{r}
+ds2_<-ds2
+ds2_$mortality <-
+    as.integer(ds2_$hospdisposition == "Mortality")
+
+  ds2_<-
+    ds2_[-grep("fss", names(ds2))]
+
+```
+
+
+
+Next, the response variable will be converted to a factor.
+```{r}
+ds2_[['mortality']]<-as.factor(ds2_[['mortality']])
+
+```
+
+This dropped another 6 variables, now totaling 66. 
+Now that pre-processing the data has finished, the data can be divided into training set 1 and training set 2. Training set 2 is essentially a test set. 
+The sets will be created as random samples.
+I will first use the set.seed() function to ensure reproducibility of results
+```{r}
+set.seed(1)
+sampleInd<-sample(1:nrow(ds2_),.8*nrow(ds2_))
+
+train_<-ds2_[sampleInd,]
+test_<-ds2_[-sampleInd,]
+
+```
+
+
+
+Now that training and test sets have been created, a model(s) can be selected.
+First, I'll use the table function to identify class proportions of the target variable
+
+```{r}
+table(ds2_[['mortality']])
+
+```
+
+Based on the class proportions, 97% of the observations have a mortality of 0, ie they don't die.
+Using the null model, which predicts the most common occurring class (which is 0) all of the time, I'd expect to have a high accuracy model.
+A vector of those predictions is created below.
+```{r}
+pred_null2_<-rep(0,41)
+```
+
+
+The next model that will be tried is random forests, a collection of decision trees; ie bootstrapped decision trees.
+```{r}
+set.seed(1)
+library(randomForest)
+rf2_<-randomForest(mortality~.,data=ds2_,mtry=6)
+```
+
+
+Now that the random forest model has been fit with the training data (training_), predictions can be made on the 'test' set (test_)
+```{r}
+pred_rf2_<-predict(rf2_,newdata=subset(test_,select=-mortality))
+```
+
+
+Let's see the proportions.
+```{r}
+table(pred_rf2_)
+```
+
+As you can see, 98% of the predictions were 0 (no mortality), 2% off from the true number of no mortality.
+Finally, accuracy will be computed for each model on the 'test' set (test_), which is one of the metrics in the competition.
+First, a vector will be created with the true response variable classes, then accuracy will be computed.
+```{r}
+test_mort<-test_$mortality
+
+print('Accuracy null model on test_:')
+mean(pred_null2_==test_mort)
+
+
+print('Accuracy random forest model on test_:')
+mean(pred_rf2_==test_mort)
+```
+
+The null model has 98% accuracy, the random forest model has 100% accuracy on test_.
+
+
+
+
+
+
+
+
+
+
