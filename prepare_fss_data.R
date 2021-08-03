@@ -36,6 +36,7 @@ prepare_fss_data <- function(training = TRUE) {
 
   ##############################################################################
   # User Defined data preperation code starts here
+  library(dplyr)
 
   hackathon_fss_data_<- hackathon_fss_data%>%
     select(-starts_with('admitto'))
@@ -44,7 +45,8 @@ prepare_fss_data <- function(training = TRUE) {
   100*(ncol(hackathon_fss_data)-ncol(hackathon_fss_data_))/ncol(hackathon_fss_data)
   
   
-  
+  # removing remainder of missing data
+  hackathon_fss_data_<-na.omit(hackathon_fss_data_)
   hackathon_fss_data<-hackathon_fss_data_
 
   # User Defined Code ends here

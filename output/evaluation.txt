@@ -1,0 +1,6 @@
+seconds elapsed to prepare mortality training data | 0.8682439 
+seconds elapsed to train the mortality model | 0.219414 
+seconds elapsed to prepare fss training data | 0.4606359 
+seconds elapsed to train the fss model | 0.151561 
+seconds elapsed to prepare mortality training data | 0.7171018 
+seconds elapsed to prepare fss training data | 0.03143311 

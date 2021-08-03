@@ -37,7 +37,7 @@ prepare_mortality_data <- function(training = TRUE) {
   ##############################################################################
   # User Defined Code starts here
   library(DataExplorer)
-  library('dplyr')
+  library(dplyr)
   
   
   hackathon_mortality_data$gcs_use <-
@@ -57,7 +57,8 @@ prepare_mortality_data <- function(training = TRUE) {
   #percent missing data (by columns):
   100*(ncol(hackathon_mortality_data)-ncol(hackathon_mortality_data_))/ncol(hackathon_mortality_data)
   
-
+  #removing remainder of missing data
+  hackathon_mortality_data_<-na.omit(hackathon_mortality_data_)
   
   hackathon_mortality_data_[['mortality']]<-as.factor(hackathon_mortality_data_[['mortality']])
   hackathon_mortality_data<-hackathon_mortality_data_

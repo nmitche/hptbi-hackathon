@@ -17,19 +17,21 @@ mortality_model <- function(data) {
   # User code starts here
   library(randomForest)
   #dividing into training and test set
-  sampleInd<-sample(1:nrow(data),.8*nrow(data))
-  train_<-data[sampleInd,]
+  #data<-prepare_mortality_data()
+  sampleInd<-sample(1:nrow(data),.98*nrow(data))
+  train<-data[sampleInd,]
   holdout<-data[-sampleInd,]
-  
+   
   #fitting model
-  rtn <-randomForest(mortality~.,data=train_,mtry=6)
+  rtn <-randomForest(mortality~.,data=train,mtry=6)
   
   #making predictions on holdout data
   pred_rtn<-predict(rtn,newdata=subset(holdout,select=-mortality))
-  
+   
   #evaluating model
   holdout_mort<-holdout$mortality
-  accuracy_holdout<-mean(pred_rtn==holdout_mort)
+  accuracy_mort_holdout<-mean(pred_rtn==holdout_mort)
+  #the model had perfect accuracy(1) on *holdout, a small subset of the training data. This provides some evidence that the model will perform well on the testing set, and generalized well.
   # User code ends here
   ##############################################################################
 
@@ -56,12 +58,21 @@ predict.hackathon_mortality_model <- function(object, newdata, ...) {
   
   ##############################################################################
   # User Defined data preparation code starts here
-
-  p <- stats::predict.glm(object, newdata, type = "response", ...)
-  ifelse(p > 0.25, "Mortality", "Alive")
-
+  newdata_<-newdata 
+  predict(object,newdata_)
 }
 
+###manual predictions- code check test, uncomment single line hashtags to test
+#d2<-prepare_mortality_data()
+#f2<-mortality_model(d2)
+#rf2 <-randomForest(mortality~.,data=d2[sample(1:nrow(d2),.98*nrow(d2)),],mtry=6)
+#test_<-d2[-sample(1:nrow(d2),.98*nrow(d2)),]
+#predict(rf2,newdata=test_,select=-mortality)
+##above works!
+##below line causes error: C stack usage 15924192 is too close too limit, is something wrong with the mortality model function?
+#predict(f2,newdata=test,select=-mortality)
+##because of above the custom prediction function will also have an error:
+#predict.hackathon_mortality_model(m2,holdout)
 ################################################################################
 #                                 End of File
 ################################################################################
