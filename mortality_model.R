@@ -59,7 +59,7 @@ predict.hackathon_mortality_model <- function(object, newdata, ...) {
   ##############################################################################
   # User Defined data preparation code starts here
   newdata_<-newdata 
-  NextMethod(object,newdata_)
+  randomForest:::predict.randomForest(object,newdata_)
 }
 
 ###manual predictions- code check test, uncomment single line hashtags to test

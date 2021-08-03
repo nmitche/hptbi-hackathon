@@ -58,7 +58,7 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
   ##############################################################################
   # user defined code starts here
   newdata_<-newdata
-  NextMethod(object,newdata_)
+  randomForest:::predict.randomForest(object,newdata_)
 }
 
 ###manual predictions-code check test, uncomment single hash tag lines to test
