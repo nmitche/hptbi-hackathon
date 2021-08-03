@@ -57,8 +57,8 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
 
   ##############################################################################
   # user defined code starts here
-newdata_<-newdata
-predict(object,newdata_)
+  newdata_<-newdata
+  NextMethod(object,newdata_)
 }
 
 ###manual predictions-code check test, uncomment single hash tag lines to test
