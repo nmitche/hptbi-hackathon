@@ -1,7 +1,7 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
-Copyright (C) 2020 The R Foundation for Statistical Computing
-Platform: x86_64-w64-mingw32/x64 (64-bit)
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -33,18 +33,16 @@ Type 'q()' to quit R.
 > 
 > training_data <- do.call(paste0("prepare_", response, "_data"), list(training = TRUE))
 
-Attaching package: 'dplyr'
+Attaching package: ‘dplyr’
 
-The following objects are masked from 'package:stats':
+The following objects are masked from ‘package:stats’:
 
     filter, lag
 
-The following objects are masked from 'package:base':
+The following objects are masked from ‘package:base’:
 
     intersect, setdiff, setequal, union
 
-Warning message:
-package 'dplyr' was built under R version 4.0.5 
 > 
 > toc <- Sys.time()
 > 
@@ -66,14 +64,12 @@ package 'dplyr' was built under R version 4.0.5
 randomForest 4.6-14
 Type rfNews() to see new features/changes/bug fixes.
 
-Attaching package: 'randomForest'
+Attaching package: ‘randomForest’
 
-The following object is masked from 'package:dplyr':
+The following object is masked from ‘package:dplyr’:
 
     combine
 
-Warning message:
-package 'randomForest' was built under R version 4.0.5 
 > 
 > toc <- Sys.time()
 > 
@@ -95,4 +91,4 @@ package 'randomForest' was built under R version 4.0.5
 > 
 > proc.time()
    user  system elapsed 
-   0.73    0.10    0.95 
+  0.869   0.759   0.967 

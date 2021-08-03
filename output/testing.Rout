@@ -1,7 +1,7 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
-Copyright (C) 2020 The R Foundation for Statistical Computing
-Platform: x86_64-w64-mingw32/x64 (64-bit)
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -40,19 +40,16 @@ Type 'q()' to quit R.
 > tic <- Sys.time()
 > m_training_data <- prepare_mortality_data(training = TRUE)
 
-Attaching package: 'dplyr'
+Attaching package: ‘dplyr’
 
-The following objects are masked from 'package:stats':
+The following objects are masked from ‘package:stats’:
 
     filter, lag
 
-The following objects are masked from 'package:base':
+The following objects are masked from ‘package:base’:
 
     intersect, setdiff, setequal, union
 
-Warning messages:
-1: package 'DataExplorer' was built under R version 4.0.5 
-2: package 'dplyr' was built under R version 4.0.5 
 > toc <- Sys.time()
 > 
 > cat("seconds elapsed to prepare mortality training data |",
@@ -78,5 +75,111 @@ Warning messages:
 > 
 > tic <- Sys.time()
 > predicted_mortality <- predict(trained_mortality_model, newdata = m_training_data)
-Error: evaluation nested too deeply: infinite recursion / options(expressions=)?
-Execution halted
+> write.table(predicted_mortality,
++             file = "./output/predicted_mortality_training.dat",
++             quote = FALSE,
++             row.names = FALSE,
++             col.names = FALSE)
+> toc <- Sys.time()
+> 
+> cat("seconds elapsed to predict mortality on training data |",
++     as.numeric(difftime(toc, tic, units = "secs")),
++     "\n",
++     file = "./output/evaluation.txt",
++     sep = " ",
++     append = TRUE)
+> 
+> ################################################################################
+> # prediction for the fss total
+> tic <- Sys.time()
+> predicted_fss <- predict(trained_fss_model, newdata = f_training_data)
+> write.table(predicted_fss,
++             file = "./output/predicted_fss_training.dat",
++             quote = FALSE,
++             row.names = FALSE,
++             col.names = FALSE)
+> toc <- Sys.time()
+> 
+> cat("seconds elapsed to predict FSS on training data |",
++     as.numeric(difftime(toc, tic, units = "secs")),
++     "\n",
++     file = "./output/evaluation.txt",
++     sep = " ",
++     append = TRUE)
+> 
+> 
+> ################################################################################
+> ################################################################################
+> 
+> if (USE_TESTING_DATA) {
++ 
++   ################################################################################
++   # import and prepare the testing (holdout) data set
++   tic <- Sys.time()
++   m_testing_data <- prepare_mortality_data(training = FALSE)
++   toc <- Sys.time()
++ 
++   cat("seconds elapsed to prepare mortality testing data |",
++       as.numeric(difftime(toc, tic, units = "secs")),
++       "\n",
++       file = "./output/evaluation.txt",
++       sep = " ",
++       append = TRUE)
++ 
++   tic <- Sys.time()
++   f_testing_data <- prepare_fss_data(training = FALSE)
++   toc <- Sys.time()
++ 
++   cat("seconds elapsed to prepare fss testing data |",
++       as.numeric(difftime(toc, tic, units = "secs")),
++       "\n",
++       file = "./output/evaluation.txt",
++       sep = " ",
++       append = TRUE)
++ 
++   ################################################################################
++   # prediction for the mortality outcome
++ 
++   tic <- Sys.time()
++   predicted_mortality <- predict(trained_mortality_model, newdata = m_testing_data)
++   write.table(predicted_mortality,
++               file = "./output/predicted_mortality_testing.dat",
++               quote = FALSE,
++               row.names = FALSE,
++               col.names = FALSE)
++   toc <- Sys.time()
++ 
++   cat("seconds elapsed to predict mortality on testing data |",
++       as.numeric(difftime(toc, tic, units = "secs")),
++       "\n",
++       file = "./output/evaluation.txt",
++       sep = " ",
++       append = TRUE)
++ 
++   ################################################################################
++   # prediction for the fss total
++   tic <- Sys.time()
++   predicted_fss <- predict(trained_fss_model, newdata = f_testing_data)
++   write.table(predicted_fss,
++               file = "./output/predicted_fss_testing.dat",
++               quote = FALSE,
++               row.names = FALSE,
++               col.names = FALSE)
++   toc <- Sys.time()
++ 
++   cat("seconds elapsed to predict FSS on testing data |",
++       as.numeric(difftime(toc, tic, units = "secs")),
++       "\n",
++       file = "./output/evaluation.txt",
++       sep = " ",
++       append = TRUE)
++ 
++ }
+> 
+> ################################################################################
+> #                                 End of File                                  #
+> ################################################################################
+> 
+> proc.time()
+   user  system elapsed 
+  0.868   0.739   0.969 

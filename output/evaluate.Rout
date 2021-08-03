@@ -1,7 +1,7 @@
 
-R version 4.0.2 (2020-06-22) -- "Taking Off Again"
-Copyright (C) 2020 The R Foundation for Statistical Computing
-Platform: x86_64-w64-mingw32/x64 (64-bit)
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -27,9 +27,37 @@ Type 'q()' to quit R.
 > ################################################################################
 > # import predictions
 > predicted_mortality_training <- read.table("./output/predicted_mortality_training.dat")[[1]]
-Error in file(file, "rt") : cannot open the connection
-Calls: read.table -> file
-In addition: Warning message:
-In file(file, "rt") :
-  cannot open file './output/predicted_mortality_training.dat': No such file or directory
+> predicted_fss_training       <- read.table("./output/predicted_fss_training.dat")[[1]]
+> raw_data_training            <- read.csv("./csvs/training.csv")
+> 
+> if (USE_TESTING_DATA) {
++   predicted_mortality_testing <- read.table("./output/predicted_mortality_testing.dat")[[1]]
++   predicted_fss_testing <- read.table("./output/predicted_fss_testing.dat")[[1]]
++   raw_data_testing <- read.csv("./csvs/testing.csv")
++ }
+> 
+> ################################################################################
+> # Get the observed outcomes
+> observed_fss_training <-
++   Reduce(function(x, y) x + y,
++          x = raw_data_training[raw_data_training$hospdisposition != "Mortality", grep("^fss", names(raw_data_training))])
+> observed_fss_training <- na.omit(observed_fss_training)
+> attributes(observed_fss_training) <- NULL
+> 
+> observed_mortality_training <- ifelse(raw_data_training$hospdisposition == "Mortality", "Mortality", "Alive")
+> 
+> if (USE_TESTING_DATA) {
++   observed_fss_testing <-
++     Reduce(function(x, y) x + y,
++            x = raw_data_testing[raw_data_testing$hospdisposition != "Mortality", grep("^fss", names(raw_data_testing))])
++   observed_fss_testing <- na.omit(observed_fss_testing)
++   attributes(observed_fss_testing) <- NULL
++ 
++   observed_mortality_testing <- ifelse(raw_data_testing$hospdisposition == "Mortality", "Mortality", "Alive")
++ }
+> 
+> ################################################################################
+> # Checks:
+> stopifnot(length(observed_mortality_training) == length(predicted_mortality_training))
+Error: length(observed_mortality_training) == length(predicted_mortality_training) is not TRUE
 Execution halted
