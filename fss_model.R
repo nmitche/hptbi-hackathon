@@ -47,7 +47,7 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
   ##############################################################################
   # user defined code starts here
   #randomForest:::predict.randomForest(object,newdata_)
-  
+  loadNamespace("randomForest")
   class(object)<-class(object)[-1]
   class(object)<-c(class(object),'hackathon_fss_model')
   predictions<-predict(object,newdata)

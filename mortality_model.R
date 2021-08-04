@@ -45,6 +45,7 @@ predict.hackathon_mortality_model <- function(object, newdata, ...) {
   
   ##############################################################################
   # User Defined data preparation code starts here
+  loadNamespace("randomForest")
   class(object)<-class(object)[-1]
   class(object)<-c(class(object),'hackathon_mortality_model')
    
