@@ -46,22 +46,42 @@ prepare_mortality_data <- function(training = TRUE) {
            no  = hackathon_mortality_data$gcsed)
   
   #The DataExplorer package was used to generate an automated EDA report
-  #create_report(ds)
-
-  
+  #create_report(hackathon_mortality_data)
   #Based on report results missing data was quickly identified
   
-  hackathon_mortality_data_<- hackathon_mortality_data%>%
-    select(-starts_with('admitto'))
+  #missing data: feature engineering
+  hmd<-hackathon_mortality_data
+   
   
-  #percent missing data (by columns):
-  100*(ncol(hackathon_mortality_data)-ncol(hackathon_mortality_data_))/ncol(hackathon_mortality_data)
+  for (i in 1:ncol(hmd)){
+     if(names(hmd)[i]!='fss_total'|names(hmd)[i]!='mortality'|names(hmd)[i]!='gcs_use'){
+   if(class(hmd[[i]])=='integer'|class(hmd[[i]])=='numeric'){
+       hmd[[i]] <-
+     ifelse(is.na(hmd[[i]]),
+            round(mean(na.omit(hmd[[i]]))),
+            hmd[[i]])
   
-  #removing remainder of missing data
-  hackathon_mortality_data_<-na.omit(hackathon_mortality_data_)
+   }
+     else if (class(hmd[[i]])=='character'){
+    hmd[[i]] <-
+     ifelse(is.na(hmd[[i]]),
+            sample(na.omit(hmd[[i]]),1),
+            hmd[[i]])
   
-  hackathon_mortality_data_[['mortality']]<-as.factor(hackathon_mortality_data_[['mortality']])
-  hackathon_mortality_data<-hackathon_mortality_data_
+     }
+  else if (class(hmd[[i]])=='factor'){
+  hmd[[i]] <-
+       ifelse(is.na(hmd[[i]]),
+              sample(na.omit(hmd[[i]]),1),
+              hmd[[i]])
+    
+       }
+     }
+   }
+  
+  
+  hmd[['mortality']]<-as.factor(hmd[['mortality']])
+  hackathon_mortality_data<-hmd
   # User Defined Code ends here
   ##############################################################################
 

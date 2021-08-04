@@ -16,20 +16,9 @@ fss_model <- function(data) {
   ##############################################################################
   # User code starts here
   library(randomForest)
-  #preparing subsets for model eval   
-  sampleInd<-sample(1:nrow(data),.98*nrow(data))
-  train<-data[sampleInd,]
-  holdout<-data[-sampleInd,]
+    
+  rtn <-randomForest(fss_total~.,data=data,mtry=sqrt(ncol(data)))
   
-  #fitting model
-  rtn <-randomForest(fss_total~.,data=train,mtry=6)
-  
-  #holdout evaluation
-  pred_rtn<-predict(rtn,newdata=subset(holdout,select=-fss_total))
-  holdout_fss<-holdout$fss_total
-  holdout_mse<-mean((pred_rtn-holdout_fss)^2) #.301 when ran 8-3-21  
-  mean_fse<-mean(data$fss_total)  #9.265
-  #model performed exceptionally well on the *holdout (a small subset of the training data), mse:.301. Note the mean of fss_total is 9.265. This provides some evidence that the model will perform well on the test set and generalized well.
   # User code ends here
   ##############################################################################
 
@@ -57,21 +46,15 @@ predict.hackathon_fss_model <- function(object, newdata, ...) {
 
   ##############################################################################
   # user defined code starts here
-  newdata_<-newdata
-  randomForest:::predict.randomForest(object,newdata_)
+  #randomForest:::predict.randomForest(object,newdata_)
+  
+  class(object)<-class(object)[-1]
+  class(object)<-c(class(object),'hackathon_fss_model')
+  predictions<-predict(object,newdata)
+  predictions<-round(predictions)
+  predictions<-as.integer(predictions)
+  predictions
 }
-
-###manual predictions-code check test, uncomment single hash tag lines to test
-#d1<-prepare_fss_data()
-#f1<-fss_model(d1)
-#rf1 <-randomForest(fss_total~.,data=d1[sample(1:nrow(d1),.98*nrow(d1)),],mtry=6)
-#test__<-d1[-sample(1:nrow(d1),.98*nrow(d1)),]
-#predict(rf1,newdata=test__,select=-fss_total)
-##above works!
-##below line causes error: C stack usage 15923632 is too close too limit, is something wrong with the fss model function?
-#predict(f1,newdata=test__,select=-fss_total)
-##because of above the custom prediction function will also have an error:
-#predict.hackathon_mortality_model(f1,test__)
 ################################################################################
 #                                 End of File
 ################################################################################

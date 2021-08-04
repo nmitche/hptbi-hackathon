@@ -38,17 +38,38 @@ prepare_fss_data <- function(training = TRUE) {
   # User Defined data preperation code starts here
   library(dplyr)
 
-  hackathon_fss_data_<- hackathon_fss_data%>%
-    select(-starts_with('admitto'))
-  
-  #percent missing data (by columns):
-  100*(ncol(hackathon_fss_data)-ncol(hackathon_fss_data_))/ncol(hackathon_fss_data)
+  #missing data: feature engineering
+  hfd<-hackathon_fss_data
   
   
-  # removing remainder of missing data
-  hackathon_fss_data_<-na.omit(hackathon_fss_data_)
-  hackathon_fss_data<-hackathon_fss_data_
-
+  for (i in 1:ncol(hfd)){
+    if(names(hfd)[i]!='fss_total'){
+      if(class(hfd[[i]])=='integer'|class(hfd[[i]])=='numeric'){
+        hfd[[i]] <-
+          ifelse(is.na(hfd[[i]]),
+                 round(mean(na.omit(hfd[[i]]))),
+                 hfd[[i]])
+        
+      }
+      else if (class(hfd[[i]])=='character'){
+        hfd[[i]] <-
+          ifelse(is.na(hfd[[i]]),
+                 sample(na.omit(hfd[[i]]),1),
+                 hfd[[i]])
+        
+      }
+      else if (class(hfd[[i]])=='factor'){
+        hfd[[i]] <-
+          ifelse(is.na(hfd[[i]]),
+                 sample(na.omit(hfd[[i]]),1),
+                 hfd[[i]])
+        
+      }
+    }
+  }
+  
+  
+  hackathon_fss_data<-hfd
   # User Defined Code ends here
   ##############################################################################
 
