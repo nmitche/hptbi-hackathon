@@ -36,44 +36,81 @@ prepare_fss_data <- function(training = TRUE) {
 
   ##############################################################################
   # User Defined data preperation code starts here
-  library(DataExplorer)
+  #library(DataExplorer)
 
   #missing data: feature engineering
   hfd<-hackathon_fss_data
   
-  
   for (i in 1:ncol(hfd)){
-      if(class(hfd[[i]])=='integer'|class(hfd[[i]])=='numeric'){
+    
+    if(class(hfd[[i]])[1]=='ordered'&class(hfd[[i]])[2]=='factor'){
+      if(length(na.omit(hfd[[i]]))==0){
+        hfd[[i]]<-rep(0,length(hfd[[i]])) 
+        
+      }
+      else{
         hfd[[i]] <-
           ifelse(is.na(hfd[[i]]),
                  round(mean(na.omit(hfd[[i]]))),
                  hfd[[i]])
-        
+      }  
+      
+    }
+    else{
+      if (class(hfd[[i]])%in%'integer'|class(hfd[[i]])%in%'numeric'){
+        if(length(na.omit(hfd[[i]]))==0){
+          hfd[[i]]<-rep(0,length(hfd[[i]])) 
+          
+        }
+        else{
+          hfd[[i]] <-
+            ifelse(is.na(hfd[[i]]),
+                   round(mean(na.omit(hfd[[i]]))),
+                   hfd[[i]])
+        }
       }
-      else if (class(hfd[[i]])=='character'){
-        hfd[[i]] <-
-          ifelse(is.na(hfd[[i]]),
-                 sample(na.omit(hfd[[i]]),1),
-                 hfd[[i]])
-        
+      else if (class(hfd[[i]])%in%'character'){
+        if(length(na.omit(hfd[[i]]))==0){
+          hfd[[i]]<-rep('missing',length(hfd[[i]]))
+          
+        }
+        else{
+          hfd[[i]] <-
+            ifelse(is.na(hfd[[i]]),
+                   sample(na.omit(hfd[[i]]),1),
+                   hfd[[i]])
+        }
       }
-      else if (class(hfd[[i]])=='factor'){
-        hfd[[i]] <-
-          ifelse(is.na(hfd[[i]]),
-                 sample(na.omit(hfd[[i]]),1),
-                 hfd[[i]])
-        
+      else if ('factor'%in%class(hfd[[i]])){
+        if(length(na.omit(hfd[[i]]))==0){
+          hfd[[i]]<-rep('missing',length(hfd[[i]]))
+          
+        }
+        else{
+          hfd[[i]] <-
+            ifelse(is.na(hfd[[i]]),
+                   sample(na.omit(hfd[[i]]),1),
+                   hfd[[i]])
+        }
       }
-      else if (class(hfd[[i]])=='logical'){
-        hfd[[i]] <-
-          ifelse(is.na(hfd[[i]]),
-                 sample(na.omit(hfd[[i]]),1),
-                 hfd[[i]])
-        
+      else if (class(hfd[[i]])%in%'logical'){
+        if(length(na.omit(hfd[[i]]))==0){
+          hfd[[i]]<-rep('missing',length(hfd[[i]]))
+          
+        }
+        else{
+          hfd[[i]] <-
+            ifelse(is.na(hfd[[i]]),
+                   sample(na.omit(hfd[[i]]),1),
+                   hfd[[i]])
+        }
+      }
     }
   }
   
-  hfd<-set_missing(hfd,list(0,'missing'))
+  
+  
+ # hfd<-set_missing(hfd,list(0,'missing'))
   hackathon_fss_data<-hfd
   # User Defined Code ends here
   ##############################################################################

@@ -36,7 +36,7 @@ prepare_mortality_data <- function(training = TRUE) {
 
   ##############################################################################
   # User Defined Code starts here
-  library(DataExplorer)
+ # library(DataExplorer)
   
   
   hackathon_mortality_data$gcs_use <-
@@ -48,39 +48,75 @@ prepare_mortality_data <- function(training = TRUE) {
    
   #missing data: feature engineering 
   for (i in 1:ncol(hmd)){
-   if(class(hmd[[i]])=='integer'|class(hmd[[i]])=='numeric'){
-       hmd[[i]] <-
-     ifelse(is.na(hmd[[i]]),
-            round(mean(na.omit(hmd[[i]]))),
-            hmd[[i]])
-  
-   }
-     else if (class(hmd[[i]])=='character'){
-    hmd[[i]] <-
-     ifelse(is.na(hmd[[i]]),
-            sample(na.omit(hmd[[i]]),1),
-            hmd[[i]])
-  
-     }
-  else if (class(hmd[[i]])=='factor'){
-  hmd[[i]] <-
-       ifelse(is.na(hmd[[i]]),
-              sample(na.omit(hmd[[i]]),1),
-              hmd[[i]])
     
-       }
-       else if (class(hmd[[i]])=='logical'){
-         hmd[[i]] <-
-           ifelse(is.na(hmd[[i]]),
-                  sample(na.omit(hmd[[i]]),1),
-                  hmd[[i]])
-         
-       }
-       
-       }
+    if(class(hmd[[i]])[1]=='ordered'&class(hmd[[i]])[2]=='factor'){
+      if(length(na.omit(hmd[[i]]))==0){
+        hmd[[i]]<-rep(0,length(hmd[[i]])) 
+        
+      }
+      else{
+        hmd[[i]] <-
+          ifelse(is.na(hmd[[i]]),
+                 round(mean(na.omit(hmd[[i]]))),
+                 hmd[[i]])
+      }  
+      
+    }
+    else{
+      if (class(hmd[[i]])%in%'integer'|class(hmd[[i]])%in%'numeric'){
+        if(length(na.omit(hmd[[i]]))==0){
+          hmd[[i]]<-rep(0,length(hmd[[i]])) 
+          
+        }
+        else{
+          hmd[[i]] <-
+            ifelse(is.na(hmd[[i]]),
+                   round(mean(na.omit(hmd[[i]]))),
+                   hmd[[i]])
+        }
+      }
+      else if (class(hmd[[i]])%in%'character'){
+        if(length(na.omit(hmd[[i]]))==0){
+          hmd[[i]]<-rep('missing',length(hmd[[i]]))
+          
+        }
+        else{
+          hmd[[i]] <-
+            ifelse(is.na(hmd[[i]]),
+                   sample(na.omit(hmd[[i]]),1),
+                   hmd[[i]])
+        }
+      }
+      else if ('factor'%in%class(hmd[[i]])){
+        if(length(na.omit(hmd[[i]]))==0){
+          hmd[[i]]<-rep('missing',length(hmd[[i]]))
+          
+        }
+        else{
+          hmd[[i]] <-
+            ifelse(is.na(hmd[[i]]),
+                   sample(na.omit(hmd[[i]]),1),
+                   hmd[[i]])
+        }
+      }
+      else if (class(hmd[[i]])%in%'logical'){
+        if(length(na.omit(hmd[[i]]))==0){
+          hmd[[i]]<-rep('missing',length(hmd[[i]]))
+          
+        }
+        else{
+          hmd[[i]] <-
+            ifelse(is.na(hmd[[i]]),
+                   sample(na.omit(hmd[[i]]),1),
+                   hmd[[i]])
+        }
+      }
+    }
+  }
   
   
-  hmd<-set_missing(hmd,list(0,'missing'))
+  
+  #hmd<-set_missing(hmd,list(0,'missing'))
   hmd[['mortality']]<-as.factor(hmd[['mortality']])
   hackathon_mortality_data<-hmd
   # User Defined Code ends here
