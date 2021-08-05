@@ -1,6 +1,28 @@
-seconds elapsed to prepare mortality training data | 0.8682439 
-seconds elapsed to train the mortality model | 0.219414 
-seconds elapsed to prepare fss training data | 0.4606359 
-seconds elapsed to train the fss model | 0.151561 
-seconds elapsed to prepare mortality training data | 0.7171018 
-seconds elapsed to prepare fss training data | 0.03143311 
+language | r
+Version | v0.2.5
+seconds elapsed to prepare mortality training data | 0.08531928 
+seconds elapsed to train the mortality model | 0.3207393 
+seconds elapsed to prepare fss training data | 0.08617187 
+seconds elapsed to train the fss model | 0.3178587 
+seconds elapsed to prepare mortality training data | 0.07945442 
+seconds elapsed to prepare fss training data | 0.06157565 
+seconds elapsed to predict mortality on training data | 0.04060173 
+seconds elapsed to predict FSS on training data | 0.0273366 
+seconds elapsed to prepare mortality testing data | 0.01289582 
+seconds elapsed to prepare fss testing data | 0.01579571 
+seconds elapsed to predict mortality on testing data | 0.01044536 
+seconds elapsed to predict FSS on testing data | 0.01600504 
+Accuracy for mortality model on training data | 1 
+Sensitivity for mortality model on training data | 1 
+Specificity for mortality model on training data | 1 
+PPV for mortality model on training data | 1 
+NPV for mortality model on training data | 1 
+MCC for mortality model on training data | 1 
+F1 for mortality model on training data | 1 
+Mortality Assessments on testing data | SUCCESS
+MSE for predicted FSS on training data | 0.3944223 
+Min abs difference in FSS prediction and observed on training data | 0 
+Median abs difference in FSS prediction and observed on training data | 0 
+Mean abs difference in FSS prediction and observed on training data | 0.2828685 
+Max abs difference in FSS prediction and observed on training data | 3 
+FSS Assessments on testing data | SUCCESS
