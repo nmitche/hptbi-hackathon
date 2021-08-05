@@ -37,7 +37,6 @@ prepare_mortality_data <- function(training = TRUE) {
   ##############################################################################
   # User Defined Code starts here
   library(DataExplorer)
-  library(dplyr)
   
   
   hackathon_mortality_data$gcs_use <-
@@ -45,16 +44,10 @@ prepare_mortality_data <- function(training = TRUE) {
            yes = hackathon_mortality_data$gcsicu,
            no  = hackathon_mortality_data$gcsed)
   
-  #The DataExplorer package was used to generate an automated EDA report
-  #create_report(hackathon_mortality_data)
-  #Based on report results missing data was quickly identified
-  
-  #missing data: feature engineering
   hmd<-hackathon_mortality_data
    
-  
+  #missing data: feature engineering 
   for (i in 1:ncol(hmd)){
-     if(names(hmd)[i]!='fss_total'|names(hmd)[i]!='mortality'|names(hmd)[i]!='gcs_use'){
    if(class(hmd[[i]])=='integer'|class(hmd[[i]])=='numeric'){
        hmd[[i]] <-
      ifelse(is.na(hmd[[i]]),
@@ -76,10 +69,18 @@ prepare_mortality_data <- function(training = TRUE) {
               hmd[[i]])
     
        }
-     }
-   }
+       else if (class(hmd[[i]])=='logical'){
+         hmd[[i]] <-
+           ifelse(is.na(hmd[[i]]),
+                  sample(na.omit(hmd[[i]]),1),
+                  hmd[[i]])
+         
+       }
+       
+       }
   
   
+  hmd<-set_missing(hmd,list(0,'missing'))
   hmd[['mortality']]<-as.factor(hmd[['mortality']])
   hackathon_mortality_data<-hmd
   # User Defined Code ends here

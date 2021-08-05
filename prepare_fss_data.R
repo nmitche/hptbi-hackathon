@@ -36,14 +36,13 @@ prepare_fss_data <- function(training = TRUE) {
 
   ##############################################################################
   # User Defined data preperation code starts here
-  library(dplyr)
+  library(DataExplorer)
 
   #missing data: feature engineering
   hfd<-hackathon_fss_data
   
   
   for (i in 1:ncol(hfd)){
-    if(names(hfd)[i]!='fss_total'){
       if(class(hfd[[i]])=='integer'|class(hfd[[i]])=='numeric'){
         hfd[[i]] <-
           ifelse(is.na(hfd[[i]]),
@@ -65,10 +64,16 @@ prepare_fss_data <- function(training = TRUE) {
                  hfd[[i]])
         
       }
+      else if (class(hfd[[i]])=='logical'){
+        hfd[[i]] <-
+          ifelse(is.na(hfd[[i]]),
+                 sample(na.omit(hfd[[i]]),1),
+                 hfd[[i]])
+        
     }
   }
   
-  
+  hfd<-set_missing(hfd,list(0,'missing'))
   hackathon_fss_data<-hfd
   # User Defined Code ends here
   ##############################################################################
