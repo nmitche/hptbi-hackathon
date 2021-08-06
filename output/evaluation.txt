@@ -1,6 +1,38 @@
-seconds elapsed to prepare mortality training data | 0.8682439 
-seconds elapsed to train the mortality model | 0.219414 
-seconds elapsed to prepare fss training data | 0.4606359 
-seconds elapsed to train the fss model | 0.151561 
-seconds elapsed to prepare mortality training data | 0.7171018 
-seconds elapsed to prepare fss training data | 0.03143311 
+language | r
+Version | v1.0
+seconds elapsed to prepare mortality training data | 0.08733535 
+seconds elapsed to train the mortality model | 0.3260007 
+seconds elapsed to prepare fss training data | 0.08110714 
+seconds elapsed to train the fss model | 0.271265 
+seconds elapsed to prepare mortality training data | 0.07852745 
+seconds elapsed to prepare fss training data | 0.05648541 
+seconds elapsed to predict mortality on training data | 0.03380084 
+seconds elapsed to predict FSS on training data | 0.02901745 
+seconds elapsed to prepare mortality testing data | 0.01357198 
+seconds elapsed to prepare fss testing data | 0.01556373 
+seconds elapsed to predict mortality on testing data | 0.01062679 
+seconds elapsed to predict FSS on testing data | 0.01511931 
+Accuracy for mortality model on training data | 1 
+Sensitivity for mortality model on training data | 1 
+Specificity for mortality model on training data | 1 
+PPV for mortality model on training data | 1 
+NPV for mortality model on training data | 1 
+MCC for mortality model on training data | 1 
+F1 for mortality model on training data | 1 
+Accuracy for mortality model on testing data | 0.8409091 
+Sensitivity for mortality model on testing data | 0.2222222 
+Specificity for mortality model on testing data | 1 
+PPV for mortality model on testing data | 1 
+NPV for mortality model on testing data | 0.8333333 
+MCC for mortality model on testing data | 0.4303315 
+F1 for mortality model on testing data | 0.3636364 
+MSE for predicted FSS on training data | 0.4023904 
+Min abs difference in FSS prediction and observed on training data | 0 
+Median abs difference in FSS prediction and observed on training data | 0 
+Mean abs difference in FSS prediction and observed on training data | 0.2828685 
+Max abs difference in FSS prediction and observed on training data | 3 
+MSE for predicted FSS on testing data | 1.411765 
+Min abs difference in FSS prediction and observed on testing data | 0 
+Median abs difference in FSS prediction and observed on testing data | 1 
+Mean abs difference in FSS prediction and observed on testing data | 0.9705882 
+Max abs difference in FSS prediction and observed on testing data | 3 
