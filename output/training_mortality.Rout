@@ -32,17 +32,6 @@ Type 'q()' to quit R.
 > tic <- Sys.time()
 > 
 > training_data <- do.call(paste0("prepare_", response, "_data"), list(training = TRUE))
-
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
-
 > 
 > toc <- Sys.time()
 > 
@@ -63,13 +52,6 @@ The following objects are masked from ‘package:base’:
 > trained_model <- do.call(paste0(response, "_model"), list(data = training_data))
 randomForest 4.6-14
 Type rfNews() to see new features/changes/bug fixes.
-
-Attaching package: ‘randomForest’
-
-The following object is masked from ‘package:dplyr’:
-
-    combine
-
 > 
 > toc <- Sys.time()
 > 
@@ -91,4 +73,4 @@ The following object is masked from ‘package:dplyr’:
 > 
 > proc.time()
    user  system elapsed 
-  1.010   0.778   1.077 
+  0.661   0.734   0.666 

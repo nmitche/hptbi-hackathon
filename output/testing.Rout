@@ -39,17 +39,6 @@ Type 'q()' to quit R.
 > # import and prepare the training data set
 > tic <- Sys.time()
 > m_training_data <- prepare_mortality_data(training = TRUE)
-
-Attaching package: ‘dplyr’
-
-The following objects are masked from ‘package:stats’:
-
-    filter, lag
-
-The following objects are masked from ‘package:base’:
-
-    intersect, setdiff, setequal, union
-
 > toc <- Sys.time()
 > 
 > cat("seconds elapsed to prepare mortality training data |",
@@ -182,4 +171,4 @@ The following objects are masked from ‘package:base’:
 > 
 > proc.time()
    user  system elapsed 
-  0.868   0.739   0.969 
+  0.482   0.744   0.599 
